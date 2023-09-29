@@ -1,6 +1,6 @@
 import socket
-
-from cryptography.fernet import Fernet
+import cryptography
+import cryptography.fernet
 
 #PROCESO DE ENCRIPTACION DE LOS MENSAGES
 
@@ -8,7 +8,7 @@ def encriptar(texto, clave):
     # Generar una clave de encriptación a partir de la clave proporcionada
     clave_bytes = clave.encode()
     clave_encriptacion = Fernet.generate_key()
-    f = Fernet(clave_encriptacion)
+    f = cryptography.fernet.Fernet(clave_encriptacion)
 
     # Encriptar el texto
     texto_encriptado = f.encrypt(texto.encode())
@@ -22,7 +22,12 @@ def desencriptar(texto_encriptado, clave_encriptacion):
     texto_desencriptado = f.decrypt(texto_encriptado).decode()
 
     return texto_desencriptado
-import socket
+
+
+# Generate a key for encryption and decryption
+key = cryptography.fernet.Fernet.generate_key()
+f = cryptography.fernet.Fernet(b"r5BkBHhmTScN2ioU6hZ93LfO0qm2KaleMarCHep2X_c=")
+
 mensajes=[]
 def main():
     # Crea un socket TCP/IP
@@ -46,22 +51,27 @@ def main():
                 # Recibe los datos del cliente
                 data = connection.recv(1024)
                 if data:
-                    mensajes.append(data)
-                    # Devuelve los datos al cliente
-                    connection.sendall()
-                    print("Mensaje recibido y devuelto:", data.decode())
+                    msg=f.decrypt(data)
+                    connection.send(msg)
+                    print(msg)#client_address,">",
 
                     # Verifica si se recibió el mensaje de salida
-                    if data.decode() == "exit":
+                    if msg == "exit":
+                        connection.close()
+                        sock.close()
                         break
                 else:
+                    connection.close()
+                    sock.close()
                     break
         finally:
             # Cierra la conexión
             connection.close()
+            sock.close()
 
             # Verifica si se recibió el mensaje de salida para terminar el programa
-            if data.decode() == "exit":
+            if msg == "exit":
+                sock.close()
                 break
 
     # Cierra el socket principal
