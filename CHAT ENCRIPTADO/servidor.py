@@ -8,7 +8,7 @@ def encriptar(texto, clave):
     # Generar una clave de encriptación a partir de la clave proporcionada
     clave_bytes = clave.encode()
     clave_encriptacion = Fernet.generate_key()
-    f = Fernet(clave_encriptacion)
+    f = cryptography.fernet.Fernet(clave_encriptacion)
 
     # Encriptar el texto
     texto_encriptado = f.encrypt(texto.encode())
