@@ -34,5 +34,6 @@ def run_client():
             encrypted_message = f.encrypt(MSG.encode())
             client.send(encrypted_message)
             response = client.recv(1024).decode()
-            print(">"+f.decrypt(response))
+            print("b>"+response)
+            print(f.decrypt(response))
 run_client()
