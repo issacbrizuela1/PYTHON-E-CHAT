@@ -9,8 +9,8 @@ key = cryptography.fernet.Fernet.generate_key()
 f = cryptography.fernet.Fernet(b"r5BkBHhmTScN2ioU6hZ93LfO0qm2KaleMarCHep2X_c=")
 
 # Define the host and port for the server
-host = "localhost"
-port = 12345
+host = "127.0.0.1"
+port = 8000
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -34,5 +34,5 @@ def run_client():
             encrypted_message = f.encrypt(MSG.encode())
             client.send(encrypted_message)
             response = client.recv(1024).decode()
-            print(">"+response)
+            print(">"+f.decrypt(response))
 run_client()
