@@ -9,7 +9,7 @@ key = cryptography.fernet.Fernet.generate_key()
 f = cryptography.fernet.Fernet(b"r5BkBHhmTScN2ioU6hZ93LfO0qm2KaleMarCHep2X_c=")
 
 # Define the host and port for the server
-host = "172.20.10.7"
+host = "192.168.54.253"
 port = 5555
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
