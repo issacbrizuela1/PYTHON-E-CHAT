@@ -1,5 +1,6 @@
 import socket
 import threading
+import hashlib
 import cryptography.fernet
 
 # Generate a key for encryption and decryption
@@ -45,20 +46,8 @@ def start_server():
         print(f"Cliente conectado desde {client_address[0]}:{client_address[1]}")
         datos.append(client_socket)
         # Iniciar un hilo para manejar al cliente
-        encrypted_data = client_socket.recv(1024)
-        if not encrypted_data:
-            break
-        else:
-            # Desencriptar los datos recibidos
-            decrypted_data = f.decrypt(encrypted_data)
-            print(f"Mensaje recibido del cliente {client_address}: {decrypted_data.decode()}")
-            for mensages in datos:
-                #mensages[0][0].sendall(encrypted_data)
-                print(type(mensages))
-                mensages[0].sendall(encrypted_data)
-                mensages[0].close()
-        
-        
+        client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address,datos))
+        client_thread.start()
 
 # Iniciar el servidor
 start_server()

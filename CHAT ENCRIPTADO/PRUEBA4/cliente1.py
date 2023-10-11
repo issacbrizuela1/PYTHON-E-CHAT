@@ -27,7 +27,7 @@ def start_client():
         client_socket.send(encrypted_message)
 
         # Recibir la respuesta del servidor
-        encrypted_response = client_socket.recv(1024)
+        encrypted_response = client_socket.recv(2048)
         decrypted_response = f.decrypt(encrypted_response)
         print(f"Respuesta del servidor: {decrypted_response.decode()}")
 
